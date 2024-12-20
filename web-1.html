@@ -1,0 +1,502 @@
+<!DOCTYPE html>
+<html lang="zh">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ETC监测预警系统</title>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/three@0.128.0/examples/js/loaders/GLTFLoader.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.7.1/gsap.min.js"></script>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: Arial, sans-serif;
+            min-height: 100vh;
+            background-color: #1a1f35;
+            background-image: 
+                linear-gradient(135deg, rgba(32, 39, 56, 0.8) 0%, rgba(41, 50, 75, 0.4) 100%),
+                radial-gradient(circle at 100% 100%, rgba(76, 86, 126, 0.2) 0%, transparent 50%),
+                radial-gradient(circle at 0% 0%, rgba(149, 175, 212, 0.1) 0%, transparent 50%),
+                repeating-linear-gradient(45deg, rgba(103, 128, 159, 0.1) 0px, rgba(103, 128, 159, 0.1) 1px, transparent 1px, transparent 10px);
+            background-attachment: fixed;
+            background-blend-mode: overlay;
+            position: relative;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            padding: 50px 20px;
+            color: white;
+            overflow-x: hidden;
+        }
+
+        body::before {
+            content: '';
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-image: 
+                linear-gradient(90deg, rgba(76, 86, 126, 0.15) 1px, transparent 1px),
+                linear-gradient(rgba(76, 86, 126, 0.15) 1px, transparent 1px);
+            background-size: 50px 50px;
+            pointer-events: none;
+            z-index: 1;
+            backdrop-filter: blur(0.5px);
+        }
+
+        body::after {
+            content: '';
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: 
+                radial-gradient(circle at 50% 50%, transparent 0%, rgba(26, 31, 53, 0.8) 70%),
+                linear-gradient(135deg, rgba(149, 175, 212, 0.1) 0%, transparent 50%);
+            pointer-events: none;
+            z-index: 2;
+            mix-blend-mode: overlay;
+        }
+
+        .header, .tab-container, .description-container {
+            position: relative;
+            z-index: 3;
+        }
+
+        .header {
+            text-align: center;
+            margin-bottom: 60px;
+            background: linear-gradient(to right, 
+                #95afd4 0%,
+                #ccd6f6 20%, 
+                #ffffff 30%,
+                #ccd6f6 40%,
+                #95afd4 50%,
+                #ccd6f6 60%,
+                #ffffff 70%,
+                #ccd6f6 80%,
+                #95afd4 100%);
+            background-size: 200% auto;
+            color: transparent;
+            -webkit-background-clip: text;
+            background-clip: text;
+            font-size: 48px;
+            font-weight: 800;
+            letter-spacing: 4px;
+            text-shadow: 
+                0 0 20px rgba(100,255,218,0.1),
+                0 0 40px rgba(100,255,218,0.1);
+            font-family: "Helvetica Neue", Arial, sans-serif;
+            animation: metalShine 8s linear infinite;
+            position: relative;
+        }
+
+        .header::after {
+            content: 'ETC MONITORING SYSTEM';
+            display: block;
+            font-size: 16px;
+            color: #8892b0;
+            letter-spacing: 8px;
+            margin-top: 10px;
+            font-weight: 400;
+            text-shadow: none;
+            opacity: 0.7;
+        }
+
+        @keyframes metalShine {
+            0% {
+                background-position: -200% center;
+            }
+            100% {
+                background-position: 200% center;
+            }
+        }
+
+        .tab-container {
+            width: 100%;
+            max-width: 1200px;
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 20px;
+            padding: 20px;
+            margin-bottom: 20px;
+        }
+
+        .tab {
+            aspect-ratio: 21/9;
+            background: linear-gradient(135deg, #29324b, #1a1f35);
+            border: 1px solid rgba(149, 175, 212, 0.2);
+            border-radius: 15px;
+            cursor: pointer;
+            box-shadow: 
+                0 4px 15px rgba(0, 0, 0, 0.3),
+                inset 0 0 10px rgba(149, 175, 212, 0.1);
+            transition: all 0.3s ease;
+            font-size: 24px;
+            font-weight: bold;
+            color: #ccd6f6;
+            position: relative;
+            overflow: hidden;
+            backdrop-filter: blur(5px);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .tab::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: linear-gradient(45deg, rgba(136,146,176,0.1), rgba(26,35,126,0.3));
+            opacity: 0;
+            transition: opacity 0.3s ease;
+        }
+
+        .tab:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 8px 25px rgba(136,146,176,0.2);
+            border-color: rgba(204,214,246,0.3);
+        }
+
+        .tab:hover::before {
+            opacity: 1;
+        }
+
+        .tab span {
+            position: relative;
+            z-index: 1;
+            text-shadow: 0 0 10px rgba(204,214,246,0.3);
+        }
+
+        .intro-tab {
+            grid-column: 1 / -1;
+            aspect-ratio: 21/9;
+            padding: 30px;
+            cursor: pointer;
+            text-align: left;
+            font-size: 16px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: flex-start;
+            transition: all 0.3s ease;
+            overflow: hidden;
+        }
+
+        .intro-tab.expanded {
+            aspect-ratio: auto;
+            height: auto;
+            min-height: 600px;
+            padding: 30px;
+        }
+
+        .intro-content {
+            width: 100%;
+            max-height: 0;
+            opacity: 0;
+            transition: all 0.3s ease;
+            overflow: hidden;
+        }
+
+        .intro-tab.expanded .intro-content {
+            max-height: none;
+            opacity: 1;
+            margin-top: 20px;
+        }
+
+        .intro-tab .description-title {
+            color: #ccd6f6;
+            font-size: 24px;
+            font-weight: bold;
+            letter-spacing: 1px;
+            text-align: center;
+            margin: 0;
+            transition: all 0.3s ease;
+        }
+
+        .intro-tab .description-title::after {
+            content: '▼';
+            display: inline-block;
+            margin-left: 10px;
+            font-size: 0.8em;
+            transition: transform 0.3s ease;
+        }
+
+        .intro-tab.expanded .description-title::after {
+            transform: rotate(180deg);
+        }
+
+        @keyframes glow {
+            0% { box-shadow: 0 0 5px rgba(136,146,176,0.2); }
+            50% { box-shadow: 0 0 20px rgba(136,146,176,0.3); }
+            100% { box-shadow: 0 0 5px rgba(136,146,176,0.2); }
+        }
+
+        .tab:hover {
+            animation: glow 2s infinite;
+        }
+
+        @media (max-width: 768px) {
+            body::before {
+                background-size: 30px 30px;
+            }
+        }
+
+        #car-container {
+            position: fixed;
+            top: 50%;
+            right: 0;
+            width: 400px;
+            height: 400px;
+            transform: translateY(-50%);
+            z-index: 10;
+            pointer-events: none;
+        }
+
+        #car-canvas {
+            width: 100%;
+            height: 100%;
+            pointer-events: auto;
+        }
+
+        @media (max-width: 1600px) {
+            #car-container {
+                width: 300px;
+                height: 300px;
+            }
+        }
+
+        @media (max-width: 1200px) {
+            #car-container {
+                display: none;
+            }
+        }
+
+        .description-text, .description-text-en {
+            color: #8892b0;
+            line-height: 1.8;
+            margin-bottom: 15px;
+            text-align: justify;
+            opacity: 0.9;
+        }
+
+        .description-text {
+            font-size: 16px;
+        }
+
+        .description-text-en {
+            font-size: 15px;
+            opacity: 0.8;
+            margin-bottom: 30px;
+        }
+
+        .info-button {
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            width: 120px;
+            height: 40px;
+            background: linear-gradient(135deg, #29324b, #1a1f35);
+            border: 1px solid rgba(149, 175, 212, 0.2);
+            border-radius: 8px;
+            cursor: pointer;
+            box-shadow: 
+                0 4px 15px rgba(0, 0, 0, 0.3),
+                inset 0 0 10px rgba(149, 175, 212, 0.1);
+            transition: all 0.3s ease;
+            font-size: 14px;
+            font-weight: bold;
+            color: #ccd6f6;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            z-index: 100;
+        }
+
+        .info-button:hover {
+            transform: translateY(-2px);
+            box-shadow: 
+                0 8px 25px rgba(136,146,176,0.2),
+                inset 0 0 10px rgba(149, 175, 212, 0.2);
+            border-color: rgba(204,214,246,0.3);
+        }
+
+        .info-button span {
+            position: relative;
+            z-index: 1;
+            text-shadow: 0 0 10px rgba(204,214,246,0.3);
+        }
+
+        @media (max-width: 768px) {
+            .info-button {
+                width: 100px;
+                height: 35px;
+                font-size: 12px;
+                top: 10px;
+                right: 10px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="header">ETC监测预警系统</div>
+    
+    <div class="tab-container">
+        <button class="tab" onclick="location.href='page1.html'"><span>数据大屏</span></button>
+        <button class="tab" onclick="location.href='page2.html'"><span>交互式界面</span></button>
+        <button class="tab" onclick="location.href='page3.html'"><span>离线分析</span></button>
+    </div>
+
+    <button class="info-button" onclick="location.href='introduction.html'">
+        <span>系统简介</span>
+    </button>
+
+    <div id="car-container">
+        <canvas id="car-canvas"></canvas>
+    </div>
+
+    <script>
+        let scene, camera, renderer, car;
+        const container = document.getElementById('car-canvas');
+
+        function init() {
+            scene = new THREE.Scene();
+            
+            // 调整相机位置和视角
+            camera = new THREE.PerspectiveCamera(75, 1, 0.1, 1000);
+            camera.position.set(0, 2, 5);
+            camera.lookAt(0, 0, 0);
+
+            renderer = new THREE.WebGLRenderer({
+                canvas: container,
+                alpha: true,
+                antialias: true
+            });
+            renderer.setSize(400, 400);
+            renderer.setPixelRatio(window.devicePixelRatio);
+
+            // 增强光照效果
+            const ambientLight = new THREE.AmbientLight(0xffffff, 0.7);
+            scene.add(ambientLight);
+
+            const directionalLight = new THREE.DirectionalLight(0xffffff, 1);
+            directionalLight.position.set(5, 5, 5);
+            scene.add(directionalLight);
+
+            // 加载模型
+            const loader = new THREE.GLTFLoader();
+            loader.load(
+                './3d/scene.gltf',
+                function (gltf) {
+                    car = gltf.scene;
+                    console.log('模型加载成功');
+                    
+                    // 调整模型
+                    car.scale.set(0.5, 0.5, 0.5);
+                    car.position.set(0, 0, 0);
+                    car.rotation.y = Math.PI / 4;
+
+                    scene.add(car);
+
+                    // 自动旋转动画
+                    function autoRotate() {
+                        if (car) {
+                            car.rotation.y += 0.005;
+                        }
+                        requestAnimationFrame(autoRotate);
+                    }
+                    autoRotate();
+                },
+                function (progress) {
+                    console.log('加载进度:', (progress.loaded / progress.total * 100) + '%');
+                },
+                function (error) {
+                    console.error('模型加载错误:', error);
+                }
+            );
+
+            // 优化鼠标移动事件
+            let timeout;
+            container.addEventListener('mousemove', function(event) {
+                if (!car) return;
+
+                // 防抖处理
+                clearTimeout(timeout);
+                timeout = setTimeout(() => {
+                    const rect = container.getBoundingClientRect();
+                    const x = ((event.clientX - rect.left) / rect.width) * 2 - 1;
+                    const y = -((event.clientY - rect.top) / rect.height) * 2 + 1;
+
+                    // 限制旋转范围
+                    const targetX = Math.max(-0.5, Math.min(0.5, y * 0.5));
+                    const targetY = Math.max(-0.5, Math.min(0.5, x * 0.5));
+
+                    // 平滑旋转
+                    gsap.to(car.rotation, {
+                        x: targetX,
+                        y: car.rotation.y + targetY,
+                        duration: 1,
+                        ease: "power2.out"
+                    });
+                }, 50);
+            });
+
+            // 添加鼠标离开事件
+            container.addEventListener('mouseleave', function() {
+                if (!car) return;
+                
+                // 恢复初始位置
+                gsap.to(car.rotation, {
+                    x: 0,
+                    y: Math.PI / 4,
+                    duration: 1,
+                    ease: "power2.out"
+                });
+            });
+        }
+
+        function animate() {
+            requestAnimationFrame(animate);
+            renderer.render(scene, camera);
+        }
+
+        init();
+        animate();
+
+        // 优化窗口调整响应
+        window.addEventListener('resize', function() {
+            const container = document.getElementById('car-container');
+            const width = container.clientWidth;
+            const height = container.clientHeight;
+            
+            camera.aspect = width / height;
+            camera.updateProjectionMatrix();
+            renderer.setSize(width, height);
+        });
+
+        function toggleIntro(element) {
+            element.classList.toggle('expanded');
+            
+            // 添加展开/收起的动画效果
+            if (element.classList.contains('expanded')) {
+                gsap.from(element.querySelector('.intro-content'), {
+                    opacity: 0,
+                    y: -20,
+                    duration: 0.5,
+                    ease: "power2.out"
+                });
+            }
+        }
+    </script>
+</body>
+</html>
