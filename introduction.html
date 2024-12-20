@@ -1,0 +1,167 @@
+<!DOCTYPE html>
+<html lang="zh">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>系统简介 - ETC监测预警系统</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: Arial, sans-serif;
+            min-height: 100vh;
+            background-color: #1a1f35;
+            background-image: 
+                linear-gradient(135deg, rgba(32, 39, 56, 0.8) 0%, rgba(41, 50, 75, 0.4) 100%),
+                radial-gradient(circle at 100% 100%, rgba(76, 86, 126, 0.2) 0%, transparent 50%),
+                radial-gradient(circle at 0% 0%, rgba(149, 175, 212, 0.1) 0%, transparent 50%);
+            background-attachment: fixed;
+            background-blend-mode: overlay;
+            color: white;
+            padding: 50px 20px;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 40px;
+            background: rgba(41, 50, 75, 0.5);
+            backdrop-filter: blur(10px);
+            border-radius: 15px;
+            border: 1px solid rgba(149, 175, 212, 0.2);
+            box-shadow: 
+                0 0 20px rgba(149, 175, 212, 0.1),
+                inset 0 0 15px rgba(149, 175, 212, 0.1);
+        }
+
+        .header {
+            text-align: center;
+            margin-bottom: 40px;
+        }
+
+        .title {
+            font-size: 36px;
+            color: #ccd6f6;
+            margin-bottom: 10px;
+            text-shadow: 0 0 10px rgba(204,214,246,0.3);
+        }
+
+        .subtitle {
+            font-size: 18px;
+            color: #8892b0;
+            margin-bottom: 30px;
+        }
+
+        .content {
+            margin-bottom: 40px;
+        }
+
+        .section {
+            margin-bottom: 30px;
+        }
+
+        .section-title {
+            font-size: 24px;
+            color: #ccd6f6;
+            margin-bottom: 20px;
+            padding-bottom: 10px;
+            border-bottom: 1px solid rgba(149, 175, 212, 0.2);
+        }
+
+        .text-zh {
+            font-size: 16px;
+            line-height: 1.8;
+            color: #ccd6f6;
+            margin-bottom: 15px;
+        }
+
+        .text-en {
+            font-size: 15px;
+            line-height: 1.6;
+            color: #8892b0;
+            margin-bottom: 30px;
+        }
+
+        .back-button {
+            display: inline-block;
+            padding: 12px 24px;
+            background: linear-gradient(135deg, #29324b, #1a1f35);
+            color: #ccd6f6;
+            text-decoration: none;
+            border-radius: 8px;
+            border: 1px solid rgba(149, 175, 212, 0.2);
+            transition: all 0.3s ease;
+            margin-top: 20px;
+        }
+
+        .back-button:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(149, 175, 212, 0.2);
+        }
+
+        @media (max-width: 768px) {
+            .container {
+                padding: 20px;
+            }
+
+            .title {
+                font-size: 28px;
+            }
+
+            .subtitle {
+                font-size: 16px;
+            }
+
+            .section-title {
+                font-size: 20px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1 class="title">系统简介</h1>
+            <div class="subtitle">System Introduction</div>
+        </div>
+
+        <div class="content">
+            <div class="section">
+                <h2 class="section-title">概述 / Overview</h2>
+                <p class="text-zh">
+                    ETC监测预警系统是一个先进的智能交通管理平台，采用实时数据分析和人工智能技术，为道路运��管理提供全方位的监控和预警服务。
+                </p>
+                <p class="text-en">
+                    The ETC Monitoring and Early Warning System is an advanced intelligent transportation management platform that utilizes real-time data analysis and AI technology to provide comprehensive monitoring and warning services for road operations management.
+                </p>
+            </div>
+
+            <div class="section">
+                <h2 class="section-title">核心功能 / Core Features</h2>
+                <p class="text-zh">
+                    系统具备实时监控、数据分析、异常预警等功能，可以有效识别和预防道路运营中的各类风险，提高通行效率，保障道路安全。通过大数据分析和智能算法，为管理决策提供可靠的数据支持。
+                </p>
+                <p class="text-en">
+                    The system features real-time monitoring, data analysis, and anomaly detection capabilities, effectively identifying and preventing various risks in road operations, improving traffic efficiency, and ensuring road safety. Through big data analysis and intelligent algorithms, it provides reliable data support for management decision-making.
+                </p>
+            </div>
+
+            <div class="section">
+                <h2 class="section-title">系统架构 / System Architecture</h2>
+                <p class="text-zh">
+                    平台集成了数据大屏展示、交互式分析界面和离线数据处理等多个功能模块，为用户提供全面的数据可视化和分析工具，助力智能交通管理的数字化转型。
+                </p>
+                <p class="text-en">
+                    The platform integrates multiple functional modules including data dashboard display, interactive analysis interface, and offline data processing, providing users with comprehensive data visualization and analysis tools to support the digital transformation of intelligent transportation management.
+                </p>
+            </div>
+        </div>
+
+        <a href="web-1.html" class="back-button">返回主页 / Back to Home</a>
+    </div>
+</body>
+</html>

@@ -123,10 +123,10 @@
             width: 100%;
             max-width: 1200px;
             display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            grid-template-columns: repeat(3, 1fr);
             gap: 20px;
             padding: 20px;
-            margin-bottom: 60px;
+            margin-bottom: 20px;
         }
 
         .tab {
@@ -145,6 +145,9 @@
             position: relative;
             overflow: hidden;
             backdrop-filter: blur(5px);
+            display: flex;
+            align-items: center;
+            justify-content: center;
         }
 
         .tab::before {
@@ -175,44 +178,62 @@
             text-shadow: 0 0 10px rgba(204,214,246,0.3);
         }
 
-        .description-container {
-            max-width: 800px;
-            text-align: center;
-            margin: 0 auto;
-            padding: 20px;
-            background: rgba(41, 50, 75, 0.5);
-            backdrop-filter: blur(10px);
-            border-radius: 15px;
-            border: 1px solid rgba(149, 175, 212, 0.2);
-            box-shadow: 
-                0 0 20px rgba(149, 175, 212, 0.1),
-                inset 0 0 15px rgba(149, 175, 212, 0.1);
+        .intro-tab {
+            grid-column: 1 / -1;
+            aspect-ratio: 21/9;
+            padding: 30px;
+            cursor: pointer;
+            text-align: left;
+            font-size: 16px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: flex-start;
+            transition: all 0.3s ease;
+            overflow: hidden;
         }
 
-        .description-title {
+        .intro-tab.expanded {
+            aspect-ratio: auto;
+            height: auto;
+            min-height: 600px;
+            padding: 30px;
+        }
+
+        .intro-content {
+            width: 100%;
+            max-height: 0;
+            opacity: 0;
+            transition: all 0.3s ease;
+            overflow: hidden;
+        }
+
+        .intro-tab.expanded .intro-content {
+            max-height: none;
+            opacity: 1;
+            margin-top: 20px;
+        }
+
+        .intro-tab .description-title {
             color: #ccd6f6;
             font-size: 24px;
             font-weight: bold;
-            margin-bottom: 20px;
             letter-spacing: 1px;
+            text-align: center;
+            margin: 0;
+            transition: all 0.3s ease;
         }
 
-        .description-text {
-            color: #8892b0;
-            font-size: 16px;
-            line-height: 1.8;
-            margin-bottom: 15px;
-            text-align: justify;
+        .intro-tab .description-title::after {
+            content: '▼';
+            display: inline-block;
+            margin-left: 10px;
+            font-size: 0.8em;
+            transition: transform 0.3s ease;
         }
 
-        .description-text-en {
-            color: #8892b0;
-            font-size: 15px;
-            line-height: 1.6;
-            margin-bottom: 30px;
-            text-align: justify;
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-            opacity: 0.8;
+        .intro-tab.expanded .description-title::after {
+            transform: rotate(180deg);
         }
 
         @keyframes glow {
@@ -260,6 +281,71 @@
                 display: none;
             }
         }
+
+        .description-text, .description-text-en {
+            color: #8892b0;
+            line-height: 1.8;
+            margin-bottom: 15px;
+            text-align: justify;
+            opacity: 0.9;
+        }
+
+        .description-text {
+            font-size: 16px;
+        }
+
+        .description-text-en {
+            font-size: 15px;
+            opacity: 0.8;
+            margin-bottom: 30px;
+        }
+
+        .info-button {
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            width: 120px;
+            height: 40px;
+            background: linear-gradient(135deg, #29324b, #1a1f35);
+            border: 1px solid rgba(149, 175, 212, 0.2);
+            border-radius: 8px;
+            cursor: pointer;
+            box-shadow: 
+                0 4px 15px rgba(0, 0, 0, 0.3),
+                inset 0 0 10px rgba(149, 175, 212, 0.1);
+            transition: all 0.3s ease;
+            font-size: 14px;
+            font-weight: bold;
+            color: #ccd6f6;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            z-index: 100;
+        }
+
+        .info-button:hover {
+            transform: translateY(-2px);
+            box-shadow: 
+                0 8px 25px rgba(136,146,176,0.2),
+                inset 0 0 10px rgba(149, 175, 212, 0.2);
+            border-color: rgba(204,214,246,0.3);
+        }
+
+        .info-button span {
+            position: relative;
+            z-index: 1;
+            text-shadow: 0 0 10px rgba(204,214,246,0.3);
+        }
+
+        @media (max-width: 768px) {
+            .info-button {
+                width: 100px;
+                height: 35px;
+                font-size: 12px;
+                top: 10px;
+                right: 10px;
+            }
+        }
     </style>
 </head>
 <body>
@@ -271,27 +357,9 @@
         <button class="tab" onclick="location.href='page3.html'"><span>离线分析</span></button>
     </div>
 
-    <div class="description-container">
-        <div class="description-title">系统简介 / System Introduction</div>
-        <p class="description-text">
-            ETC监测预警系统是一个先进的智能交通管理平台，采用实时数据分析和人工智能技术，为道路运营管理提供全方位的监控和预警服务。
-        </p>
-        <p class="description-text-en">
-            The ETC Monitoring and Early Warning System is an advanced intelligent transportation management platform that utilizes real-time data analysis and AI technology to provide comprehensive monitoring and warning services for road operations management.
-        </p>
-        <p class="description-text">
-            系统具备实时监控、数据分析、异常预警等功能，可以有效识别和预防道路运营中的各类风险，提高通行效率，保障道路安全。通过大数据分析和智能算法，为管理决策提供可靠的数据支持。
-        </p>
-        <p class="description-text-en">
-            The system features real-time monitoring, data analysis, and anomaly detection capabilities, effectively identifying and preventing various risks in road operations, improving traffic efficiency, and ensuring road safety. Through big data analysis and intelligent algorithms, it provides reliable data support for management decision-making.
-        </p>
-        <p class="description-text">
-            平台集成了数据大屏展示、交互式分析界面和离线数据处理等多个功能模块，为用户提供全面的数据可视化和分析工具，助力智能交通管理的数字化转型。
-        </p>
-        <p class="description-text-en">
-            The platform integrates multiple functional modules including data dashboard display, interactive analysis interface, and offline data processing, providing users with comprehensive data visualization and analysis tools to support the digital transformation of intelligent transportation management.
-        </p>
-    </div>
+    <button class="info-button" onclick="location.href='introduction.html'">
+        <span>系统简介</span>
+    </button>
 
     <div id="car-container">
         <canvas id="car-canvas"></canvas>
@@ -415,6 +483,20 @@
             camera.updateProjectionMatrix();
             renderer.setSize(width, height);
         });
+
+        function toggleIntro(element) {
+            element.classList.toggle('expanded');
+            
+            // 添加展开/收起的动画效果
+            if (element.classList.contains('expanded')) {
+                gsap.from(element.querySelector('.intro-content'), {
+                    opacity: 0,
+                    y: -20,
+                    duration: 0.5,
+                    ease: "power2.out"
+                });
+            }
+        }
     </script>
 </body>
 </html>
