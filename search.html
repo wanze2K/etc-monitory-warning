@@ -1,0 +1,104 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>数据查询系统</title>
+    <link rel="stylesheet" href="css/styles.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
+</head>
+<body>
+    <div class="main-container">
+        <!-- 查询条件区域 -->
+        <div class="search-area">
+            <div class="search-row">
+                <div class="search-item">
+                    <label><i class="fas fa-hashtag"></i> 序号：</label>
+                    <input type="text" id="queryXH" placeholder="请输入序号">
+                </div>
+                <div class="search-item">
+                    <label><i class="fas fa-car"></i> 车牌：</label>
+                    <input type="text" id="queryCP" placeholder="请输入车牌号">
+                </div>
+                <div class="search-item">
+                    <label><i class="fas fa-truck"></i> 车型：</label>
+                    <input type="text" id="queryCX" placeholder="请输入车型">
+                </div>
+                <div class="search-item">
+                    <label><i class="fas fa-clock"></i> 入口时间：</label>
+                    <input type="datetime-local" id="queryRKSJ">
+                </div>
+                <div class="search-item">
+                    <label><i class="fas fa-clock"></i> 出口时间：</label>
+                    <input type="datetime-local" id="queryCKSJ">
+                </div>
+            </div>
+            <div class="search-row">
+                <div class="search-item">
+                    <label><i class="fas fa-road"></i> 入口收费站：</label>
+                    <input type="text" id="querySFZRKMC" placeholder="请输入入口收费站">
+                </div>
+                <div class="search-item">
+                    <label><i class="fas fa-road"></i> 出口收费站：</label>
+                    <input type="text" id="querySFZCKMC" placeholder="请输入出口收费站">
+                </div>
+                <div class="search-item">
+                    <label><i class="fas fa-sticky-note"></i> 备注：</label>
+                    <div class="radio-group">
+                        <label class="radio-label">
+                            <input type="radio" name="queryBZ" value="入深圳" checked>
+                            <span>入深圳</span>
+                        </label>
+                        <label class="radio-label">
+                            <input type="radio" name="queryBZ" value="出深圳">
+                            <span>出深圳</span>
+                        </label>
+                    </div>
+                </div>
+                <button class="search-btn">
+                    <i class="fas fa-search"></i> 查询
+                </button>
+            </div>
+        </div>
+
+        <!-- 数据表格区域 -->
+        <div class="table-container">
+            <div class="table-header">
+                <button class="export-btn">
+                    <i class="fas fa-file-excel"></i> 导出Excel
+                </button>
+            </div>
+            <table>
+                <thead>
+                    <tr>
+                        <th>序号</th>
+                        <th>车牌</th>
+                        <th>车型</th>
+                        <th>入口时间</th>
+                        <th>收费站入口名称</th>
+                        <th>出口时间</th>
+                        <th>收费站出口名称</th>
+                        <th>备注</th>
+                    </tr>
+                </thead>
+                <tbody id="result">
+                </tbody>
+            </table>
+        </div>
+
+        <!-- 分页区域 -->
+        <div class="pagination">
+            <span>共 <span id="totalRecords">0</span> 条记录</span>
+            <div class="page-controls">
+                <button class="page-btn">首页</button>
+                <button class="page-btn">上一页</button>
+                <span>第 <span id="currentPage">1</span> 页</span>
+                <button class="page-btn">下一页</button>
+                <button class="page-btn">末页</button>
+            </div>
+        </div>
+    </div>
+    <script src="script.js"></script>
+    <script src="js/export.js"></script>
+</body>
+</html>
