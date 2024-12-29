@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>高速公路ETC数据查询系统</title>
+    <title>ETC预警监测系统</title>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/three@0.128.0/examples/js/loaders/GLTFLoader.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.7.1/gsap.min.js"></script>
@@ -72,7 +72,10 @@
 
         .header {
             text-align: center;
-            margin-bottom: 60px;
+            margin: 20px 0 50px;
+            padding: 20px;
+            position: relative;
+            z-index: 4;
             background: linear-gradient(to right, 
                 #95afd4 0%,
                 #ccd6f6 20%, 
@@ -95,19 +98,25 @@
                 0 0 40px rgba(100,255,218,0.1);
             font-family: "Helvetica Neue", Arial, sans-serif;
             animation: metalShine 8s linear infinite;
-            position: relative;
         }
 
+        .header::before,
         .header::after {
-            content: 'ETC MONITORING SYSTEM';
-            display: block;
-            font-size: 16px;
-            color: #8892b0;
-            letter-spacing: 8px;
-            margin-top: 10px;
-            font-weight: 400;
-            text-shadow: none;
-            opacity: 0.7;
+            content: '';
+            position: absolute;
+            width: 100px;
+            height: 2px;
+            background: linear-gradient(90deg, transparent, #95afd4, transparent);
+            left: 50%;
+            transform: translateX(-50%);
+        }
+        
+        .header::before {
+            top: 0;
+        }
+        
+        .header::after {
+            bottom: 0;
         }
 
         @keyframes metalShine {
@@ -122,15 +131,16 @@
         .tab-container {
             width: 100%;
             max-width: 1200px;
-            display: grid;
-            grid-template-columns: repeat(3, 1fr);
-            gap: 20px;
+            display: flex;
+            justify-content: center;
+            gap: 30px;
             padding: 20px;
-            margin-bottom: 20px;
+            margin-bottom: 40px;
         }
 
         .tab {
-            aspect-ratio: 21/9;
+            width: 300px;
+            height: 160px;
             background: linear-gradient(135deg, #29324b, #1a1f35);
             border: 1px solid rgba(149, 175, 212, 0.2);
             border-radius: 15px;
@@ -139,7 +149,7 @@
                 0 4px 15px rgba(0, 0, 0, 0.3),
                 inset 0 0 10px rgba(149, 175, 212, 0.1);
             transition: all 0.3s ease;
-            font-size: 24px;
+            font-size: 22px;
             font-weight: bold;
             color: #ccd6f6;
             position: relative;
@@ -148,6 +158,8 @@
             display: flex;
             align-items: center;
             justify-content: center;
+            flex-direction: column;
+            gap: 10px;
         }
 
         .tab::before {
@@ -304,7 +316,7 @@
             position: fixed;
             top: 20px;
             right: 20px;
-            width: 120px;
+            width: 130px;
             height: 40px;
             background: linear-gradient(135deg, #29324b, #1a1f35);
             border: 1px solid rgba(149, 175, 212, 0.2);
@@ -315,11 +327,12 @@
                 inset 0 0 10px rgba(149, 175, 212, 0.1);
             transition: all 0.3s ease;
             font-size: 14px;
-            font-weight: bold;
+            font-weight: 500;
             color: #ccd6f6;
             display: flex;
             align-items: center;
             justify-content: center;
+            gap: 8px;
             z-index: 100;
         }
 
@@ -329,6 +342,16 @@
                 0 8px 25px rgba(136,146,176,0.2),
                 inset 0 0 10px rgba(149, 175, 212, 0.2);
             border-color: rgba(204,214,246,0.3);
+            background: linear-gradient(135deg, #323b57, #232942);
+        }
+
+        .info-button i {
+            font-size: 16px;
+            transition: transform 0.3s ease;
+        }
+
+        .info-button:hover i {
+            transform: rotate(360deg);
         }
 
         .info-button span {
@@ -346,18 +369,52 @@
                 right: 10px;
             }
         }
+
+        .tab i {
+            font-size: 28px;
+            margin-bottom: 5px;
+            transition: transform 0.3s ease;
+        }
+
+        .tab:hover i {
+            transform: translateY(-5px);
+        }
+
+        @media (max-width: 1024px) {
+            .tab-container {
+                flex-direction: column;
+                align-items: center;
+                gap: 20px;
+            }
+            
+            .tab {
+                width: 100%;
+                max-width: 400px;
+                height: 120px;
+            }
+        }
     </style>
 </head>
 <body>
     <div class="header">ETC监测预警系统</div>
     
     <div class="tab-container">
-        <button class="tab" onclick="location.href='page1.html'"><span>数据大屏</span></button>
-        <button class="tab" onclick="location.href='page2.html'"><span>交互式界面</span></button>
-        <button class="tab" onclick="location.href='page3.html'"><span>离线查询</span></button>
+        <button class="tab" onclick="location.href='interactive.html'">
+            <i class="fas fa-chart-line"></i>
+            <span>交互式</span>
+        </button>
+        <button class="tab" onclick="location.href='index.html'">
+            <i class="fas fa-desktop"></i>
+            <span>数据大屏</span>
+        </button>
+        <button class="tab" onclick="location.href='search.html'">
+            <i class="fas fa-database"></i>
+            <span>离线查询</span>
+        </button>
     </div>
 
     <button class="info-button" onclick="location.href='introduction.html'">
+        <i class="fas fa-info-circle"></i>
         <span>系统简介</span>
     </button>
 
@@ -455,7 +512,7 @@
             container.addEventListener('mouseleave', function() {
                 if (!car) return;
                 
-                // 恢复初始位置
+                // 复初始位置
                 gsap.to(car.rotation, {
                     x: 0,
                     y: Math.PI / 4,

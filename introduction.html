@@ -4,11 +4,49 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>系统简介 - ETC监测预警系统</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
     <style>
         * {
             margin: 0;
             padding: 0;
             box-sizing: border-box;
+        }
+
+        /* 导航栏样式 */
+        .nav-bar {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 60px;
+            background: rgba(41, 50, 75, 0.95);
+            backdrop-filter: blur(10px);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 0 30px;
+            z-index: 1000;
+            border-bottom: 1px solid rgba(149, 175, 212, 0.1);
+        }
+
+        .nav-title {
+            font-size: 18px;
+            color: #ccd6f6;
+            font-weight: 500;
+        }
+
+        .back-button {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            padding: 8px 16px;
+            background: linear-gradient(135deg, #29324b, #1a1f35);
+            color: #ccd6f6;
+            text-decoration: none;
+            border-radius: 6px;
+            border: 1px solid rgba(149, 175, 212, 0.2);
+            transition: all 0.3s ease;
+            font-size: 14px;
         }
 
         body {
@@ -22,7 +60,7 @@
             background-attachment: fixed;
             background-blend-mode: overlay;
             color: white;
-            padding: 50px 20px;
+            padding: 80px 20px 50px;  /* 增加顶部内边距，为导航栏留出空间 */
         }
 
         .container {
@@ -86,43 +124,49 @@
             margin-bottom: 30px;
         }
 
-        .back-button {
-            display: inline-block;
-            padding: 12px 24px;
-            background: linear-gradient(135deg, #29324b, #1a1f35);
-            color: #ccd6f6;
-            text-decoration: none;
-            border-radius: 8px;
-            border: 1px solid rgba(149, 175, 212, 0.2);
-            transition: all 0.3s ease;
-            margin-top: 20px;
-        }
-
         .back-button:hover {
             transform: translateY(-2px);
             box-shadow: 0 5px 15px rgba(149, 175, 212, 0.2);
+            background: linear-gradient(135deg, #323b57, #232942);
+            border-color: rgba(149, 175, 212, 0.4);
+        }
+
+        .back-button i {
+            font-size: 14px;
+            transition: transform 0.3s ease;
+        }
+
+        .back-button:hover i {
+            transform: translateX(-5px);
         }
 
         @media (max-width: 768px) {
             .container {
                 padding: 20px;
             }
-
-            .title {
-                font-size: 28px;
+            .nav-bar {
+                padding: 0 15px;
+                height: 50px;
             }
-
-            .subtitle {
+            .nav-title {
                 font-size: 16px;
             }
-
-            .section-title {
-                font-size: 20px;
+            .back-button {
+                padding: 6px 12px;
+                font-size: 13px;
             }
         }
     </style>
 </head>
 <body>
+    <div class="nav-bar">
+        <div class="nav-title">系统简介</div>
+        <a href="query.html" class="back-button">
+            <i class="fas fa-arrow-left"></i>
+            返回主页
+        </a>
+    </div>
+
     <div class="container">
         <div class="header">
             <h1 class="title">系统简介</h1>
@@ -133,35 +177,33 @@
             <div class="section">
                 <h2 class="section-title">概述 / Overview</h2>
                 <p class="text-zh">
-                    ETC监测预警系统是一个先进的智能交通管理平台，采用实时数据分析和人工智能技术，为道路运��管理提供全方位的监控和预警服务。
+                    ETC监测预警系统是一个先进的智能交通管理平台，采用实时数据分析和人工智能技术，为高速公路ETC系统提供全方位的监控和预警服务。系统实时监测车流量、通行状态和设备运行情况，确保高速公路ETC系统的稳定运行。
                 </p>
                 <p class="text-en">
-                    The ETC Monitoring and Early Warning System is an advanced intelligent transportation management platform that utilizes real-time data analysis and AI technology to provide comprehensive monitoring and warning services for road operations management.
+                    The ETC Monitoring and Early Warning System is an advanced intelligent transportation management platform that utilizes real-time data analysis and AI technology to provide comprehensive monitoring and warning services for highway ETC systems. The system monitors traffic flow, passage status, and equipment operation in real-time to ensure stable operation of highway ETC systems.
                 </p>
             </div>
 
             <div class="section">
                 <h2 class="section-title">核心功能 / Core Features</h2>
                 <p class="text-zh">
-                    系统具备实时监控、数据分析、异常预警等功能，可以有效识别和预防道路运营中的各类风险，提高通行效率，保障道路安全。通过大数据分析和智能算法，为管理决策提供可靠的数据支持。
+                    系统具备实时监控、数据分析、异常预警等核心功能。通过实时监测车流量变化，及时发现异常情况；利用大数据分析技术，预测车流量趋势，优化通行效率；配备智能预警机制，对设备故障、通行异常等情况进行及时预警，为管理决策提供可靠的数据支持。
                 </p>
                 <p class="text-en">
-                    The system features real-time monitoring, data analysis, and anomaly detection capabilities, effectively identifying and preventing various risks in road operations, improving traffic efficiency, and ensuring road safety. Through big data analysis and intelligent algorithms, it provides reliable data support for management decision-making.
+                    The system features core functionalities including real-time monitoring, data analysis, and anomaly detection. It monitors traffic flow changes in real-time to detect abnormal situations; utilizes big data analytics to predict traffic trends and optimize passage efficiency; and employs intelligent warning mechanisms for equipment failures and passage anomalies, providing reliable data support for management decisions.
                 </p>
             </div>
 
             <div class="section">
                 <h2 class="section-title">系统架构 / System Architecture</h2>
                 <p class="text-zh">
-                    平台集成了数据大屏展示、交互式分析界面和离线数据处理等多个功能模块，为用户提供全面的数据可视化和分析工具，助力智能交通管理的数字化转型。
+                    平台采用模块化设计，包含三大核心模块：数据大屏展示模块实时展现系统运行状态和关键指标；交互式分析界面支持多维度数据查询和分析；离线数据处理模块提供历史数据的深度分析功能。系统架构灵活可扩展，支持未来功能的持续优化和升级。
                 </p>
                 <p class="text-en">
-                    The platform integrates multiple functional modules including data dashboard display, interactive analysis interface, and offline data processing, providing users with comprehensive data visualization and analysis tools to support the digital transformation of intelligent transportation management.
+                    The platform adopts a modular design with three core modules: the data dashboard module displays system operation status and key indicators in real-time; the interactive analysis interface supports multi-dimensional data queries and analysis; and the offline data processing module provides in-depth analysis of historical data. The system architecture is flexible and extensible, supporting continuous optimization and upgrades of future functionalities.
                 </p>
             </div>
         </div>
-
-        <a href="web-1.html" class="back-button">返回主页 / Back to Home</a>
     </div>
 </body>
 </html>

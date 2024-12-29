@@ -1,104 +1,87 @@
 <!DOCTYPE html>
-<html lang="zh-CN">
+<html lang="zh">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>数据查询系统</title>
-    <link rel="stylesheet" href="css/styles.css">
+    <title>离线查询 - ETC监测预警系统</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
+    <link rel="stylesheet" href="css/search.css">
 </head>
 <body>
-    <div class="main-container">
-        <!-- 查询条件区域 -->
-        <div class="search-area">
-            <div class="search-row">
-                <div class="search-item">
-                    <label><i class="fas fa-hashtag"></i> 序号：</label>
-                    <input type="text" id="queryXH" placeholder="请输入序号">
-                </div>
-                <div class="search-item">
-                    <label><i class="fas fa-car"></i> 车牌：</label>
-                    <input type="text" id="queryCP" placeholder="请输入车牌号">
-                </div>
-                <div class="search-item">
-                    <label><i class="fas fa-truck"></i> 车型：</label>
-                    <input type="text" id="queryCX" placeholder="请输入车型">
-                </div>
-                <div class="search-item">
-                    <label><i class="fas fa-clock"></i> 入口时间：</label>
-                    <input type="datetime-local" id="queryRKSJ">
-                </div>
-                <div class="search-item">
-                    <label><i class="fas fa-clock"></i> 出口时间：</label>
-                    <input type="datetime-local" id="queryCKSJ">
-                </div>
-            </div>
-            <div class="search-row">
-                <div class="search-item">
-                    <label><i class="fas fa-road"></i> 入口收费站：</label>
-                    <input type="text" id="querySFZRKMC" placeholder="请输入入口收费站">
-                </div>
-                <div class="search-item">
-                    <label><i class="fas fa-road"></i> 出口收费站：</label>
-                    <input type="text" id="querySFZCKMC" placeholder="请输入出口收费站">
-                </div>
-                <div class="search-item">
-                    <label><i class="fas fa-sticky-note"></i> 备注：</label>
-                    <div class="radio-group">
-                        <label class="radio-label">
-                            <input type="radio" name="queryBZ" value="入深圳" checked>
-                            <span>入深圳</span>
-                        </label>
-                        <label class="radio-label">
-                            <input type="radio" name="queryBZ" value="出深圳">
-                            <span>出深圳</span>
-                        </label>
-                    </div>
-                </div>
-                <button class="search-btn">
-                    <i class="fas fa-search"></i> 查询
-                </button>
-            </div>
+    <div class="grid-container">
+        <!-- 导航栏 -->
+        <div class="nav">
+            <h1>离线查询</h1>
+            <a href="query.html" class="back-btn">
+                <i class="fas fa-arrow-left"></i>
+                返回主页
+            </a>
         </div>
 
-        <!-- 数据表格区域 -->
-        <div class="table-container">
-            <div class="table-header">
-                <button class="export-btn">
-                    <i class="fas fa-file-excel"></i> 导出Excel
+        <!-- 查询面板 -->
+        <div class="search-panel">
+            <h2>查询条件</h2>
+            <form id="searchForm">
+                <div class="form-group">
+                    <label>车牌号码</label>
+                    <input type="text" placeholder="请输入车牌号码">
+                </div>
+                <div class="form-group">
+                    <label>时间范围</label>
+                    <input type="datetime-local" style="margin-bottom: 10px;">
+                    <input type="datetime-local">
+                </div>
+                <div class="form-group">
+                    <label>收费站</label>
+                    <select>
+                        <option value="">全部</option>
+                        <option value="1">南站收费站</option>
+                        <option value="2">福永收费站</option>
+                        <option value="3">松岗收费站</option>
+                    </select>
+                </div>
+                <button type="submit" class="search-btn">
+                    <i class="fas fa-search"></i>
+                    查询
                 </button>
-            </div>
-            <table>
-                <thead>
-                    <tr>
-                        <th>序号</th>
-                        <th>车牌</th>
-                        <th>车型</th>
-                        <th>入口时间</th>
-                        <th>收费站入口名称</th>
-                        <th>出口时间</th>
-                        <th>收费站出口名称</th>
-                        <th>备注</th>
-                    </tr>
-                </thead>
-                <tbody id="result">
-                </tbody>
-            </table>
+            </form>
         </div>
 
-        <!-- 分页区域 -->
-        <div class="pagination">
-            <span>共 <span id="totalRecords">0</span> 条记录</span>
-            <div class="page-controls">
-                <button class="page-btn">首页</button>
-                <button class="page-btn">上一页</button>
-                <span>第 <span id="currentPage">1</span> 页</span>
-                <button class="page-btn">下一页</button>
-                <button class="page-btn">末页</button>
+        <!-- 结果面板 -->
+        <div class="result-panel">
+            <div class="result-header">
+                <h2>查询结果</h2>
+                <button class="back-btn" onclick="exportData()">
+                    <i class="fas fa-download"></i>
+                    导出数据
+                </button>
+            </div>
+            <div class="result-table">
+                <table>
+                    <thead>
+                        <tr>
+                            <th>序号</th>
+                            <th>车牌</th>
+                            <th>车型</th>
+                            <th>入口时间</th>
+                            <th>收费站入口名称</th>
+                            <th>出口时间</th>
+                            <th>收费站出口名称</th>
+                            <th>备注</th>
+                        </tr>
+                    </thead>
+                    <tbody id="resultBody">
+                        <!-- 数据将通过JavaScript动态生成 -->
+                    </tbody>
+                </table>
+            </div>
+            <div class="pagination">
+                <button class="page-btn"><i class="fas fa-chevron-left"></i></button>
+                <span class="page-info">第 1 页 / 共 1 页</span>
+                <button class="page-btn"><i class="fas fa-chevron-right"></i></button>
             </div>
         </div>
     </div>
-    <script src="script.js"></script>
-    <script src="js/export.js"></script>
+    <script src="js/search.js"></script>
 </body>
 </html>
